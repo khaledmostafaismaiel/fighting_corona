@@ -1,6 +1,8 @@
 #include <Adafruit_BMP085.h>
 #include <Wire.h>
 #include <LiquidCrystal.h>
+#include "Arduino.h"
+#include <SoftwareSerial.h>
 
 
 #define RS_PIN 13
@@ -26,6 +28,7 @@ Adafruit_BMP085 bmp;
 char PRESSURESHOW[4];// initializing a character of size 4 for showing the result
 char TEMPARATURESHOW[4];// initializing a character of size 4 for showing the temparature result
 
+SoftwareSerial BTserial(4, 6); // RX , TX
 
 void setup() {
   
@@ -44,6 +47,7 @@ void setup() {
   lcd_screen.clear();//clear display
   
   Serial.begin(9600);
+  BTserial.begin(9600);
 
   if (!bmp.begin())
   {
@@ -90,5 +94,8 @@ void loop()
   lcd_screen.setCursor(0, 0);//set the cursor to column 0, line1
   
   delay(500);
+
+  //BTserial.write(PRESSURESHOW);
+  BTserial.write(TEMPARATURESHOW);
 
 }
