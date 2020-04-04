@@ -90,10 +90,10 @@ void setup() {
   //ask user about number of breaths per minute
   while(digitalRead(select_BUTTON_PIN) == LOW){
     number_of_breaths = analogRead(POTENTIOMETER_PIN);
-    number_of_breaths = map(potentiometer_value, 0, 1023, MIN_NUM_OF_BREATHS,MAX_NUM_OF_BREATHS); //maping the potentiometer value with MIN_NUM_OF_BREATHS,MAX_NUM_OF_BREATHS
+    number_of_breaths = map(number_of_breaths, 0, 1023, MIN_NUM_OF_BREATHS,MAX_NUM_OF_BREATHS); //maping the potentiometer value with MIN_NUM_OF_BREATHS,MAX_NUM_OF_BREATHS
     
-    lcd.setCursor(0, 0); // top left
-    lcd_screen.print("number of breaths\t",number_of_breaths);
+    lcd_screen.setCursor(0, 0); // top left
+    lcd_screen.print(String("number of breaths %d\t") + String(number_of_breaths));
     delay (100);
     lcd_screen.clear();//clear display
   }
@@ -103,10 +103,10 @@ void setup() {
   //ask user about volume of oxygen per breath
   while(digitalRead(select_BUTTON_PIN) == LOW){
     volume_of_oxygen = analogRead(POTENTIOMETER_PIN);
-    volume_of_oxygen = map(potentiometer_value, 0, 1023, MIN_VOL_PER_BREATH,MAX_VOL_PER_BREATH);  //maping the potentiometer value with MIN_VOL_PER_BREATH,MAX_VOL_PER_BREATH
+    volume_of_oxygen = map(volume_of_oxygen, 0, 1023, MIN_VOL_PER_BREATH,MAX_VOL_PER_BREATH);  //maping the potentiometer value with MIN_VOL_PER_BREATH,MAX_VOL_PER_BREATH
       
-    lcd.setCursor(0, 0); // top left
-    lcd_screen.print("volume of oxygen\t",volume_of_oxygen);
+    lcd_screen.setCursor(0, 0); // top left
+    lcd_screen.print(String("volume of oxygen %d\t") + String(volume_of_oxygen));
     delay (100);
     lcd_screen.clear();//clear display
   }
