@@ -52,7 +52,7 @@ int get_delay_between_steps(int target_steps);
 int get_delay_between_Inhalation_exhalation(int target_steps, int steps_delay);
 int get_delay_between_2_breaths(int target_steps, int steps_delay, int delay_after_inhale_exhale);
 void test_movement(int target_steps, int steps_delay, int inhale_delay, int breath_breath_delay);
-
+void welcome_message();
 
 //global variable section
 
@@ -86,7 +86,8 @@ void setup() {
   pinMode(POTENTIOMETER_PIN , INPUT); //init for POTENTIOMETER_PIN
 
 
-
+  welcome_message();
+  
   init_arm_position();  //init arm position
 
   delay(500); //to prevent conflict between potentiometer readings
@@ -145,13 +146,9 @@ void loop()
   
     stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'D', delay_between_steps);
 
-      lcd_screen.setCursor(0, 0);//set the cursor to column 0, line1
-
-      get_pressure();
+    get_pressure();
       
-      lcd_screen.setCursor(0, 1);
-
-      get_temp();
+    get_temp();
 
   }
 
@@ -237,9 +234,24 @@ void stepper_move(int dir_pin , int step_pin , char dir , double delay_time) {
 */
 void init_arm_position() {
 
+
+  /*
+    #####please#####
+    #####wait!######
+  */
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(5, 0); 
+  lcd_screen.print("please");
+  lcd_screen.setCursor(5, 1);
+  lcd_screen.print("wait!");
+
   while (MIN_END_STOP_PIN == LOW) {
     stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'U', 500);
+
   }
+  
+    lcd_screen.clear();//clear display
+
 }
 
 
@@ -254,12 +266,26 @@ void init_arm_position() {
 int get_target_number_of_steps() {
 
 
+  /*
+    volume of oxygen
+    ######10########
+  */
+  lcd_screen.clear();//clear display  
+  lcd_screen.setCursor(0, 0); 
+  lcd_screen.print("volume of oxygen");
+
+
   int current_postion = 0 ;
   int current_potentiometer_value = 0;
   int last_potentiometer_value = 0;
 
   while (digitalRead(select_BUTTON_PIN) == LOW) {
-    current_potentiometer_value = analogRead(POTENTIOMETER_PIN);
+    
+    current_potentiometer_value = analogRead(POTENTIOMETER_PIN);  
+    
+    lcd_screen.setCursor(6, 1);
+    lcd_screen.print(String(current_potentiometer_value));
+    
     if (current_potentiometer_value > last_potentiometer_value ) {
       if (MAX_END_STOP_PIN == LOW) {
         stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'D', 500);
@@ -276,6 +302,9 @@ int get_target_number_of_steps() {
     last_potentiometer_value = current_potentiometer_value ;
   }
 
+
+  lcd_screen.clear();//clear display
+
   return current_postion ;
 }
 
@@ -291,6 +320,16 @@ int get_target_number_of_steps() {
 */
 int get_delay_between_steps(int target_steps) {
 
+  /*
+    #####speed######
+    #######10#######
+  */
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(5, 0); 
+  lcd_screen.print("speed");
+
+  
+  
   int exit_condition = 0 ;
   int target_delay = 0 ;
 
@@ -300,7 +339,10 @@ int get_delay_between_steps(int target_steps) {
 
       target_delay = analogRead(POTENTIOMETER_PIN);
       target_delay = map(target_delay, 0, 1023, MIN_DELAY_BETWEEN_STEPS, MAX_DELAY_BETWEEN_STEPS); //maping the potentiometer value with MIN_DELAY_BETWEEN_STEPS,MAX_DELAY_BETWEEN_STEPS
-
+      
+      lcd_screen.setCursor(6, 1);
+      lcd_screen.print(String(target_delay));
+      
       stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'D', target_delay);
 
       if (digitalRead(select_BUTTON_PIN) != LOW) {
@@ -316,6 +358,7 @@ int get_delay_between_steps(int target_steps) {
 
   }
 
+  lcd_screen.clear();//clear display
 
   return target_delay ;
 }
@@ -331,6 +374,16 @@ int get_delay_between_steps(int target_steps) {
 */
 int get_delay_between_Inhalation_exhalation(int target_steps, int steps_delay) {
 
+
+  /*
+    after inhale####
+    wait###10#######
+  */
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(5, 0); 
+  lcd_screen.print("after inhale");
+
+  
   int target_delay = 0 ;
   int exit_condition = 0 ;
 
@@ -341,6 +394,9 @@ int get_delay_between_Inhalation_exhalation(int target_steps, int steps_delay) {
       target_delay = analogRead(POTENTIOMETER_PIN);
       target_delay = map(target_delay, 0, 1023, MIN_DELAY_BETWEEN_INHALE_AND_EXHALE, MAX_DELAY_BETWEEN_INHALE_AND_EXHALE); //maping the potentiometer value with MIN_DELAY_BETWEEN_INHALE_AND_EXHALE,MAX_DELAY_BETWEEN_INHALE_AND_EXHALE
 
+      lcd_screen.setCursor(0, 1);
+      lcd_screen.print(String("wait   ") + String(target_delay));
+      
       stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'D', steps_delay);
 
       if (digitalRead(select_BUTTON_PIN) != LOW) {
@@ -357,7 +413,10 @@ int get_delay_between_Inhalation_exhalation(int target_steps, int steps_delay) {
   
         target_delay = analogRead(POTENTIOMETER_PIN);
         target_delay = map(target_delay, 0, 1023, MIN_DELAY_BETWEEN_INHALE_AND_EXHALE, MAX_DELAY_BETWEEN_INHALE_AND_EXHALE); //maping the potentiometer value with MIN_DELAY_BETWEEN_INHALE_AND_EXHALE,MAX_DELAY_BETWEEN_INHALE_AND_EXHALE
-  
+
+        lcd_screen.setCursor(0, 1);
+        lcd_screen.print(String("wait   ") + String(target_delay));
+        
         stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'U', steps_delay);
   
         if (digitalRead(select_BUTTON_PIN) != LOW) {
@@ -368,6 +427,8 @@ int get_delay_between_Inhalation_exhalation(int target_steps, int steps_delay) {
       }
     }
   }
+
+  lcd_screen.clear();//clear display
 
   return target_delay ;
 }
@@ -382,6 +443,15 @@ int get_delay_between_Inhalation_exhalation(int target_steps, int steps_delay) {
 */
 int get_delay_between_2_breaths(int target_steps, int steps_delay, int inhale_delay) {
 
+  /*
+    after breath####
+    wait###10#######
+  */
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(5, 0); 
+  lcd_screen.print("after breath");
+
+  
   int target_delay = 0 ;
   int exit_condition = 0 ;
   while (exit_condition == 0) {
@@ -391,6 +461,9 @@ int get_delay_between_2_breaths(int target_steps, int steps_delay, int inhale_de
       target_delay = analogRead(POTENTIOMETER_PIN);
       target_delay = map(target_delay, 0, 1023, MIN_DELAY_BETWEEN_2_BREATHS, MAX_DELAY_BETWEEN_2_BREATHS); //maping the potentiometer value with MIN_DELAY_BETWEEN_2_BREATHS,MAX_DELAY_BETWEEN_2_BREATHS
 
+      lcd_screen.setCursor(0, 1);
+      lcd_screen.print(String("wait   ") + String(target_delay));
+        
       stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'D', steps_delay);
 
       if(digitalRead(select_BUTTON_PIN) == LOW){
@@ -412,7 +485,10 @@ int get_delay_between_2_breaths(int target_steps, int steps_delay, int inhale_de
   
         target_delay = analogRead(POTENTIOMETER_PIN);
         target_delay = map(target_delay, 0, 1023, MIN_DELAY_BETWEEN_2_BREATHS, MAX_DELAY_BETWEEN_2_BREATHS); //maping the potentiometer value with MIN_DELAY_BETWEEN_2_BREATHS,MAX_DELAY_BETWEEN_2_BREATHS
-  
+
+        lcd_screen.setCursor(0, 1);
+        lcd_screen.print(String("wait   ") + String(target_delay));
+          
         stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'U', steps_delay);
       }
     }
@@ -423,6 +499,8 @@ int get_delay_between_2_breaths(int target_steps, int steps_delay, int inhale_de
 
   }
 
+
+  lcd_screen.clear();//clear display
 
   return target_delay ;
 
@@ -440,6 +518,18 @@ int get_delay_between_2_breaths(int target_steps, int steps_delay, int inhale_de
 */
 void test_movement(int target_steps, int steps_delay, int inhale_delay, int breath_breath_delay) {
 
+  /*
+    #####wait!#####
+    ###for test####
+  */
+
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(5, 0); 
+  lcd_screen.print("wait!");
+  lcd_screen.setCursor(3, 1);
+  lcd_screen.print("for test");
+ 
+  
   for (int i = 0 ; i < 3 ; ++i) {
 
     for (int j = 0 ; j < target_steps ; ++j) {
@@ -457,6 +547,7 @@ void test_movement(int target_steps, int steps_delay, int inhale_delay, int brea
 
   }
 
+  lcd_screen.clear();//clear display
 
 }
 
@@ -470,7 +561,8 @@ void test_movement(int target_steps, int steps_delay, int inhale_delay, int brea
 int get_pressure(){
 
   char PRESSURESHOW[4]; // initializing a character of size 4 for showing the result
-
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(0, 0);//set the cursor to column 0, line1
   lcd_screen.print("Pressure= ");
   
   String PRESSUREVALUE = String(bmp.readPressure());
@@ -492,7 +584,9 @@ int get_pressure(){
 */
 int get_temp(){
 
-   char TEMPARATURESHOW[4];  // initializing a character of size 4 for showing the temparature result
+  char TEMPARATURESHOW[4];  // initializing a character of size 4 for showing the temparature result
+
+  lcd_screen.setCursor(0, 1);//set the cursor to column 0, line1
 
   lcd_screen.print("Temparature=");// print name
   
@@ -503,4 +597,21 @@ int get_temp(){
   lcd_screen.print("C ");
   
  return bmp.readTemperature() ;
+}
+
+
+void welcome_message(){
+  /*
+    ###Fighting#####
+    ####corona######
+  */
+
+  lcd_screen.clear();//clear display
+  lcd_screen.setCursor(2, 0); 
+  lcd_screen.print("Fighting");
+  lcd_screen.setCursor(3, 1);
+  lcd_screen.print("Corona");
+  delay (2000);
+  lcd_screen.clear();//clear display
+
 }
