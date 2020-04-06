@@ -31,6 +31,9 @@
 
 #define POTENTIOMETER_PIN A3
 
+#define NUMBER_OF_TESTS 3
+
+
 
 #define RS_PIN 13
 #define EN_PIN 12
@@ -64,7 +67,8 @@ int target_number_of_steps = 0;
 int delay_between_steps = 0 ;
 int delay_between_Inhalation_exhalation = 0;
 int delay_between_2_breaths = 0 ;
-
+int avrage_pressure = 0 ;
+int avrage_temp = 0 ;
 
 
 
@@ -140,7 +144,10 @@ void loop()
 {
 
 
+  if (digitalRead(select_BUTTON_PIN) != LOW) {
 
+    //start syncronization    
+  }
 
   for(int i = 0 ; i < target_number_of_steps ; ++i){
   
@@ -530,7 +537,7 @@ void test_movement(int target_steps, int steps_delay, int inhale_delay, int brea
   lcd_screen.print("for test");
  
   
-  for (int i = 0 ; i < 3 ; ++i) {
+  for (int i = 0 ; i < NUMBER_OF_TESTS ; ++i) {
 
     for (int j = 0 ; j < target_steps ; ++j) {
       stepper_move(STEPPER_MOTOR_DIR_PIN, STEPPER_MOTOR_STEP_PIN, 'D', steps_delay);
@@ -560,6 +567,12 @@ void test_movement(int target_steps, int steps_delay, int inhale_delay, int brea
 */
 int get_pressure(){
 
+  /*
+    pressure=####10
+    ###############
+  */
+
+  
   char PRESSURESHOW[4]; // initializing a character of size 4 for showing the result
   lcd_screen.clear();//clear display
   lcd_screen.setCursor(0, 0);//set the cursor to column 0, line1
@@ -584,6 +597,11 @@ int get_pressure(){
 */
 int get_temp(){
 
+
+  /*
+    ###############
+    Temparature=#10
+  */
   char TEMPARATURESHOW[4];  // initializing a character of size 4 for showing the temparature result
 
   lcd_screen.setCursor(0, 1);//set the cursor to column 0, line1
