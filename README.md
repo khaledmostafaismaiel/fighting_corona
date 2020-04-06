@@ -14,52 +14,66 @@ ___
 >### MAIN SCENARIO
 1. welcome message 
 ```
-  /*
+/*
    ###Fighting#####
    ####corona######
-  */
+*/
 ```
 2. init arm position to a certain position using min end stop
-  
-   ' #####please##### '
-   ' #####wait!###### '
-  
+```
+/*  
+    #####please#####
+    #####wait!######
+*/
+```  
   
 3. get target number of steps which refer to the volume of oxygen per breath you can use potentiometer to choose the value and press ok when you done
-  
-    ' volume of oxygen '
-    ' ######10######## '
-  
+```
+/*  
+    volume of oxygen
+    ######10########
+*/
+```  
 
 4. get delay between steps which refer to the speed of breathing you can use potentiometer to choose the value and press ok when you done
-  
-    ' #####speed###### '
-    ' #######10####### '
-  
+```
+/*  
+    #####speed######
+    #######10#######
+*/    
+```  
 
 5. get delay between inhale and exhale you can use potentiometer to choose the value and press ok when you done
-  
-   ' after inhale#### '
-   ' wait###10####### '
-  
+```
+/*  
+    after inhale####
+    wait###10#######
+*/
+```  
 
 6. get delay between 2 breaths you can use potentiometer to choose the value and press ok when you done
-  
-   ' after breath#### '
-   ' wait###10####### '
-  
+```
+/*  
+    after breath####
+    wait###10#######
+*/
+```  
 
 7. now the doctor had set all prameters so the machine will mad 3 breaths to made the doctor sure from his setup
-  
-    ' #####wait!##### '
-    ' ###for test#### '
-  
+```
+/*  
+    #####wait!#####
+    ###for test####
+*/
+```  
 
 8. now we should connect the device with patient and every single ms we had the values of the pressure and the temperature of his breath
-
-   ' pressure=####10 '
-   ' Temparature=#10 '
-
+```
+/*
+    pressure=####10
+    Temparature=#10
+*/
+```
 ___
 > #### NOTES
 1. you can use any 8mm material to cut it and build the device
