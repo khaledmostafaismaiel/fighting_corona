@@ -13,11 +13,12 @@ ___
 ___
 >### MAIN SCENARIO
 1. welcome message 
-  
-   ' ###Fighting##### '
-   ' ####corona###### '
-  
-
+```
+  /*
+   ###Fighting#####
+   ####corona######
+  */
+```
 2. init arm position to a certain position using min end stop
   
    ' #####please##### '
